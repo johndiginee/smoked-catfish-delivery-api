@@ -2,7 +2,7 @@
 
 This repository contains REST API for a Smoked Catfish Delivery service built with FastAPI.
 
-## ENDPOINTS TO IMPLEMENT
+## ENDPOINTS
 | METHOD | ROUTE | FUNCTIONALITY |ACCESS|
 | ------- | ----- | ------------- | ------------- |
 | *POST* | ```/auth/signup/``` | _Register new user_| _All users_|
