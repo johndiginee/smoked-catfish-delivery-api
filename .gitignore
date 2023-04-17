@@ -1,3 +1,6 @@
+# Hide database inf0
+database.py
+.database.py
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
