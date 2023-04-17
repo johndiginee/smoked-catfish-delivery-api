@@ -1,5 +1,6 @@
 from database import Base
 from sqlalchemy import Column, Integer, Boolean, Text, String, ForeignKey
+from sqlalchemy.orm import relationship
 from sqlalchemy_utils.types import ChoiceType
 
 class User(Base):
@@ -12,6 +13,7 @@ class User(Base):
         password (str): The user password.
         is_active (bool): Check if user is active
         is_staff (bool): The user role
+        orders (str): The user orders
     """
     __tablename__='user'
     id = Column(Integer, primary_key=True)
@@ -20,6 +22,7 @@ class User(Base):
     password = Column(Text, nullable=True)
     is_staff = Column(Boolean, default=False)
     is_active = Column(Boolean, default=False)
+    orders=relationship('Order', back_populates='user')
 
 
     def __repr__(self):
@@ -35,6 +38,7 @@ class Order(Base):
         order_status (str): The order status.
         catfish_size (str): The catfish size
         user_id (int): The user id
+        user (str): The user orders
     """
 
     ORDER_STATUES=(
@@ -55,5 +59,9 @@ class Order(Base):
     order_status = Column(ChoiceType(choices=ORDER_STATUES), default=PENDING)
     catfish_size = Column(ChoiceType(choices=CATFISH_SIZES), default=SMALL)
     user_id = Column(Integer, ForeignKey('user.id'))
+    user=relationship('User', back_populates='orders')
+
+    def __repr__(self):
+        return f"<Order {self.id}>"
 
 
