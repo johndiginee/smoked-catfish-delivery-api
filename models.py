@@ -56,8 +56,8 @@ class Order(Base):
     __tablename__='orders'
     id = Column(Integer, primary_key=True)
     quantity = Column(Integer, nullable=False)
-    order_status = Column(ChoiceType(choices=ORDER_STATUES), default=PENDING)
-    catfish_size = Column(ChoiceType(choices=CATFISH_SIZES), default=SMALL)
+    order_status = Column(ChoiceType(choices=ORDER_STATUES), default="PENDING")
+    catfish_size = Column(ChoiceType(choices=CATFISH_SIZES), default="SMALL")
     user_id = Column(Integer, ForeignKey('user.id'))
     user=relationship('User', back_populates='orders')
 
