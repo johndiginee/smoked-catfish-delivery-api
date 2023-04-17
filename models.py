@@ -1,5 +1,5 @@
 from database import Base
-from sqlalchemy import Column, Integer, Boolean, Text, String
+from sqlalchemy import Column, Integer, Boolean, Text, String, ForeignKey
 from sqlalchemy_utils.types import ChoiceType
 
 class User(Base):
@@ -26,13 +26,15 @@ class User(Base):
         return f"<User {self.username}>"
 
 
-class Choice(Base):
-    """Represent orders.
+class Order(Base):
+    """Represent an orders.
     
     Attributes:
         id (int): The order id
         quantity (int): The order quantity.
         order_status (str): The order status.
+        catfish_size (str): The catfish size
+        user_id (int): The user id
     """
 
     ORDER_STATUES=(
@@ -40,9 +42,18 @@ class Choice(Base):
         ('IN-TRANSIT', 'in-transit'),
         ('DELIVERED', 'delivered')
     )
+
+    CATFISH_SIZES = (
+        ('SMALL', 'small'),
+        ('MEDIUM', 'medium'),
+        ('LARGE', 'large'),
+        ('EXTRA-LARGE', 'extra-large')
+    )
     __tablename__='orders'
     id = Column(Integer, primary_key=True)
     quantity = Column(Integer, nullable=False)
     order_status = Column(ChoiceType(choices=ORDER_STATUES), default=PENDING)
-    
+    catfish_size = Column(ChoiceType(choices=CATFISH_SIZES), default=SMALL)
+    user_id = Column(Integer, ForeignKey('user.id'))
+
 
