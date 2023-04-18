@@ -2,11 +2,11 @@
 
 This repository contains REST API for a Smoked Catfish Delivery service built with FastAPI.
 
-## DATABASE DESIGN
+## Database Design
 <img src="https://res.cloudinary.com/dkezlmzn1/image/upload/v1681765837/api-db_veiiu0.png"/>
 
-## ENDPOINTS
-| METHOD | ROUTE | FUNCTIONALITY |ACCESS|
+## Endpoints
+| METHOD | ENDPOINT | FUNCTIONALITY |ACCESS|
 | ------- | ----- | ------------- | ------------- |
 | *POST* | ```/auth/signup/``` | _Register new user_| _All users_|
 | *POST* | ```/auth/login/``` | _Login user_|_All users_|
@@ -28,6 +28,7 @@ This repository contains REST API for a Smoked Catfish Delivery service built wi
 * SQLAlchemy
 * Postman
 * Psycopg2
+
 Check requirements.txt for complete tools
 
 ## Installation
