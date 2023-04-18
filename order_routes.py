@@ -173,6 +173,13 @@ async def update_order(id:int, order:OrderModel, Authorize:AuthJWT=Depends()):
 
     session.commit()
 
+    response = {
+                "id": order_to_update.id,
+                "quantity": order_to_update.quantity,
+                "catfist_size": order_to_update.catfish_size,
+                "order_status": order_to_update.order_status,
+            }
+
     return jsonable_encoder(order_to_update)
 
 
@@ -198,4 +205,11 @@ async def update_order_status(id:int, order:OrderStatusModel, Authorize:AuthJWT=
         
         session.commit()
 
-        return jsonable_encoder(order_to_update)
+        response = {
+                "id": order_to_update.id,
+                "quantity": order_to_update.quantity,
+                "catfist_size": order_to_update.catfish_size,
+                "order_status": order_to_update.order_status,
+            }
+
+        return jsonable_encoder(response)
