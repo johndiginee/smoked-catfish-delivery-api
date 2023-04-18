@@ -87,7 +87,7 @@ async def list_all_orders(Authorize:AuthJWT=Depends()):
 
 @order_router.get('/orders/{id}')
 async def get_order_by_id(id:int, Authorize:AuthJWT=Depends()):
-    """Get order by id route"""
+    """Get order by id for superuser route"""
     
     try:
         Authorize.jwt_required()
@@ -128,3 +128,28 @@ async def get_user_orders(Authorize:AuthJWT=Depends()):
     current_user = session.query(User).filter(User.username==user).first()
 
     return jsonable_encoder(current_user.orders)
+
+
+@order_router.get('/user/order/{id}/')
+async def get_specific_order(id:int, Authorize:AuthJWT=Depends()):
+    """Get user's specific order route"""
+
+    try:
+        Authorize.jwt_required()
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invaid Token"
+        )
+    
+    subject = Authorize.get_jwt_subject()
+    current_user = session.query(User).filter(User.username==subject).first()
+    orders = current_user.orders
+
+    for ord in orders:
+        if ord.id == id:
+            return jsonable_encoder(ord)
+        
+    raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
+        detail="No order with such id"
+    )
