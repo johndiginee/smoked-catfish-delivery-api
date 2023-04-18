@@ -52,3 +52,16 @@ class OrderModel(BaseModel):
                 "catfish_size": "LARGE"
             }
         }
+
+class OrderStatusModel(BaseModel):
+    """Order status"""
+
+    order_status:Optional[str]="PENDING"
+
+    class Config:
+        orm_mode = True
+        schema_extra = {
+            "example": {
+                "order_status": "PENDING"
+            }
+        }
