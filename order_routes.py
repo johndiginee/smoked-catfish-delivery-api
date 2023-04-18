@@ -16,6 +16,10 @@ session = Session(bind=engine)
 
 @order_router.get('/')
 async def hello(Authorize:AuthJWT=Depends()):
+    """
+        ## A sample hello world endpoint
+        This returns Hello World
+    """
 
     try:
         Authorize.jwt_required()
@@ -29,7 +33,13 @@ async def hello(Authorize:AuthJWT=Depends()):
 
 @order_router.post('/order', status_code=status.HTTP_201_CREATED)
 async def place_an_order(order:OrderModel, Authorize:AuthJWT=Depends()):
-    """Placing an order endpoint"""
+    """
+        ## Placing an order endpoint
+        This requires the following fields:
+        - quantity (int): The order quantity.
+        - catfish_size (str): The catfish size.
+    """
+
     try:
         Authorize.jwt_required()
     except Exception as e:
@@ -63,7 +73,11 @@ async def place_an_order(order:OrderModel, Authorize:AuthJWT=Depends()):
 
 @order_router.get('/orders')
 async def list_all_orders(Authorize:AuthJWT=Depends()):
-    """List all orders endpoint"""
+    """
+        ## List all orders endpoint
+        This lists all orders made. Can only be access by superusers
+    """
+
     try:
         Authorize.jwt_required()
     except Exception as e:
@@ -87,7 +101,10 @@ async def list_all_orders(Authorize:AuthJWT=Depends()):
 
 @order_router.get('/orders/{id}')
 async def get_order_by_id(id:int, Authorize:AuthJWT=Depends()):
-    """Get order by id for superuser endpoint"""
+    """
+        ## Get order by ID for superuser endpoint
+        This gets an order by ID. Can only be access by superusers
+    """
     
     try:
         Authorize.jwt_required()
@@ -114,7 +131,10 @@ async def get_order_by_id(id:int, Authorize:AuthJWT=Depends()):
 
 @order_router.get('/user/orders')
 async def get_user_orders(Authorize:AuthJWT=Depends()):
-    """Get current user orders endpoint"""
+    """
+        ## Get current user orders endpoint
+        This lists the orders made by the currently logged in users
+    """
     
     try:
         Authorize.jwt_required()
@@ -132,7 +152,10 @@ async def get_user_orders(Authorize:AuthJWT=Depends()):
 
 @order_router.get('/user/order/{id}/')
 async def get_specific_order(id:int, Authorize:AuthJWT=Depends()):
-    """Get user's specific order endpoint"""
+    """
+        ## Get user's specific order endpoint
+        This returns an order by ID for the currently logged in users
+    """
 
     try:
         Authorize.jwt_required()
@@ -157,7 +180,12 @@ async def get_specific_order(id:int, Authorize:AuthJWT=Depends()):
 
 @order_router.put('/order/update/{id}/')
 async def update_order(id:int, order:OrderModel, Authorize:AuthJWT=Depends()):
-    """Update an order endpoint"""
+    """
+        ## Update an order endpoint
+        This updates an order and requires the following fields:
+        - quantity (int): The order quantity.
+        - catfish_size (str): The catfish size.
+    """
 
     try:
         Authorize.jwt_required()
@@ -185,7 +213,11 @@ async def update_order(id:int, order:OrderModel, Authorize:AuthJWT=Depends()):
 
 @order_router.patch('/order/update/{id}/')
 async def update_order_status(id:int, order:OrderStatusModel, Authorize:AuthJWT=Depends()):
-    """Update an order status for superuser endpoint"""
+    """
+        ## Update an order status for superuser endpoint
+        This updates an order status and requires the following field:
+        - order_status (str): The order status.
+    """
 
     try:
         Authorize.jwt_required()
@@ -215,9 +247,12 @@ async def update_order_status(id:int, order:OrderStatusModel, Authorize:AuthJWT=
         return jsonable_encoder(response)
 
 
-@order_router.patch('/order/delete/{id}/', status_code=status.HTTP_204_NO_CONTENT)
+@order_router.delete('/order/delete/{id}/', status_code=status.HTTP_204_NO_CONTENT)
 async def delete_an_order(id:int, Authorize:AuthJWT=Depends()):
-    """Delete an order status endpoint"""
+    """
+        ## Delete an order endpoint
+        This deletes an order by its ID
+    """
 
     try:
         Authorize.jwt_required()
