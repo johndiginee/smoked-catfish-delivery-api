@@ -19,3 +19,25 @@ This repository contains REST API for a Smoked Catfish Delivery service built wi
 | *GET* | ```/orders/orders/{order_id}/``` | _Retrieve an order_|_Superuser_|
 | *GET* | ```/orders/user/order/{order_id}/``` | _Get user's specific order_|_All users_|
 | *GET* | ```/docs/``` | _View API documentation_|_All users_|
+
+## Tools
+* FastAPI
+* FastAPI JWT Auth
+* Postgres
+* Uvicorn
+* SQLAlchemy
+* Postman
+* Psycopg2
+Check requirements.txt for complete tools
+
+## Installation
+
+```bash
+git clone https://github.com/johndiginee/smoked-catfish-delivery-api.git
+```
+```bash
+python3 -m venv my_env
+```
+```bash
+source my_env/bin/activate
+```
