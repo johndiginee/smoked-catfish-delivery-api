@@ -41,3 +41,18 @@ python3 -m venv my_env
 ```bash
 source my_env/bin/activate
 ```
+```bash
+pip install -r requirements.txt
+```
+Set Up your PostgreSQL database and set its URI in your database.py
+```bash
+engine=create_engine('postgresql://<username>:<password>@localhost:<port>/<db_name>',
+    echo=True
+)
+```
+```bash
+python3 init_db.py
+```
+```bash
+uvicorn main:app --reload
+```
