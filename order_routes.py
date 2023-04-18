@@ -29,7 +29,7 @@ async def hello(Authorize:AuthJWT=Depends()):
 
 @order_router.post('/order', status_code=status.HTTP_201_CREATED)
 async def place_an_order(order:OrderModel, Authorize:AuthJWT=Depends()):
-    """Placing an order route"""
+    """Placing an order endpoint"""
     try:
         Authorize.jwt_required()
     except Exception as e:
@@ -63,7 +63,7 @@ async def place_an_order(order:OrderModel, Authorize:AuthJWT=Depends()):
 
 @order_router.get('/orders')
 async def list_all_orders(Authorize:AuthJWT=Depends()):
-    """List all orders route"""
+    """List all orders endpoint"""
     try:
         Authorize.jwt_required()
     except Exception as e:
@@ -87,7 +87,7 @@ async def list_all_orders(Authorize:AuthJWT=Depends()):
 
 @order_router.get('/orders/{id}')
 async def get_order_by_id(id:int, Authorize:AuthJWT=Depends()):
-    """Get order by id for superuser route"""
+    """Get order by id for superuser endpoint"""
     
     try:
         Authorize.jwt_required()
@@ -114,7 +114,7 @@ async def get_order_by_id(id:int, Authorize:AuthJWT=Depends()):
 
 @order_router.get('/user/orders')
 async def get_user_orders(Authorize:AuthJWT=Depends()):
-    """Get current user orders route"""
+    """Get current user orders endpoint"""
     
     try:
         Authorize.jwt_required()
@@ -132,7 +132,7 @@ async def get_user_orders(Authorize:AuthJWT=Depends()):
 
 @order_router.get('/user/order/{id}/')
 async def get_specific_order(id:int, Authorize:AuthJWT=Depends()):
-    """Get user's specific order route"""
+    """Get user's specific order endpoint"""
 
     try:
         Authorize.jwt_required()
@@ -157,7 +157,7 @@ async def get_specific_order(id:int, Authorize:AuthJWT=Depends()):
 
 @order_router.put('/order/update/{id}/')
 async def update_order(id:int, order:OrderModel, Authorize:AuthJWT=Depends()):
-    """Update an order route"""
+    """Update an order endpoint"""
 
     try:
         Authorize.jwt_required()
@@ -185,7 +185,7 @@ async def update_order(id:int, order:OrderModel, Authorize:AuthJWT=Depends()):
 
 @order_router.patch('/order/update/{id}/')
 async def update_order_status(id:int, order:OrderStatusModel, Authorize:AuthJWT=Depends()):
-    """Update an order status for superuser route"""
+    """Update an order status for superuser endpoint"""
 
     try:
         Authorize.jwt_required()
@@ -213,3 +213,23 @@ async def update_order_status(id:int, order:OrderStatusModel, Authorize:AuthJWT=
             }
 
         return jsonable_encoder(response)
+
+
+@order_router.patch('/order/delete/{id}/', status_code=status.HTTP_204_NO_CONTENT)
+async def delete_an_order(id:int, Authorize:AuthJWT=Depends()):
+    """Delete an order status endpoint"""
+
+    try:
+        Authorize.jwt_required()
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invaid Token"
+        )
+    
+    order_to_delete = session.query(Order).filter(Order.id==id).first()
+    
+    session.delete(order_to_delete)
+    session.commit()
+
+    return order_to_delete
