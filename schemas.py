@@ -31,5 +31,24 @@ class Settings(BaseModel):
 
 
 class LoginModel(BaseModel):
+    """User login"""
     username:str
     password:str
+
+
+class OrderModel(BaseModel):
+    """New order"""
+    id:Optional[int]
+    quantity:int
+    order_status:Optional[str]="PENDING"
+    catfish_size:Optional[str]="SMALL"
+    user_id:Optional[int]
+
+    class Config:
+        orm_mode = True
+        schema_extra = {
+            "example": {
+                "quantity": 2,
+                "catfish_size": "LARGE"
+            }
+        }
