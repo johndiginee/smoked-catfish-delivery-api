@@ -20,6 +20,10 @@ This repository contains REST API for a Smoked Catfish Delivery service built wi
 | *GET* | ```/orders/user/order/{order_id}/``` | _Get user's specific order_|_All users_|
 | *GET* | ```/docs/``` | _View API documentation_|_All users_|
 
+<img src="https://res.cloudinary.com/dkezlmzn1/image/upload/v1681850449/Screenshot_2023-04-18_at_9.38.28_PM_rjzhsa.png"/>
+
+<img src="https://res.cloudinary.com/dkezlmzn1/image/upload/v1681850453/Screenshot_2023-04-18_at_9.38.36_PM_ghubov.png"/>
+
 ## Tools
 * FastAPI
 * FastAPI JWT Auth
