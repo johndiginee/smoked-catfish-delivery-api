@@ -83,3 +83,29 @@ async def list_all_orders(Authorize:AuthJWT=Depends()):
     raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
             detail="You are not a superuser"
         )
+
+
+@order_router.get('/orders/{id}')
+async def get_order_by_id(id:int, Authorize:AuthJWT=Depends()):
+    """Get order by id route"""
+    
+    try:
+        Authorize.jwt_required()
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invaid Token"
+        )
+    
+    user = Authorize.get_jwt_subject()
+    current_user = session.query(User).filter(User.username==user).first()
+
+    if current_user.is_staff:
+        order=session.query(Order).filter(Order.id==id).first()
+
+        return jsonable_encoder(order)
+    
+    raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="User not allowed to perform this request"
+        )
