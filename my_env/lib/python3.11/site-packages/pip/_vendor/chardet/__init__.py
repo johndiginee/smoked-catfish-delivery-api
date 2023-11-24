@@ -67,7 +67,7 @@ def detect_all(byte_str, ignore_threshold=False):
         probers = []
         for prober in detector.charset_probers:
             if hasattr(prober, "probers"):
-                probers.extend(p for p in prober.probers)
+                probers.extend(iter(prober.probers))
             else:
                 probers.append(prober)
         for prober in probers:
@@ -87,7 +87,7 @@ def detect_all(byte_str, ignore_threshold=False):
                         "language": prober.language,
                     }
                 )
-        if len(results) > 0:
+        if results:
             return sorted(results, key=lambda result: -result["confidence"])
 
     return [detector.result]

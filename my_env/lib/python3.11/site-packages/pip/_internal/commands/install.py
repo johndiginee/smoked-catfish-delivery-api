@@ -416,11 +416,10 @@ class InstallCommand(RequirementCommand):
                         json.dump(report.to_dict(), f, indent=2, ensure_ascii=False)
 
             if options.dry_run:
-                would_install_items = sorted(
+                if would_install_items := sorted(
                     (r.metadata["name"], r.metadata["version"])
                     for r in requirement_set.requirements_to_install
-                )
-                if would_install_items:
+                ):
                     write_output(
                         "Would install %s",
                         " ".join("-".join(item) for item in would_install_items),
@@ -455,17 +454,11 @@ class InstallCommand(RequirementCommand):
                 global_options=global_options,
             )
 
-            # If we're using PEP 517, we cannot do a legacy setup.py install
-            # so we fail here.
-            pep517_build_failure_names: List[str] = [
+            if pep517_build_failure_names := [
                 r.name for r in build_failures if r.use_pep517  # type: ignore
-            ]
-            if pep517_build_failure_names:
+            ]:
                 raise InstallationError(
-                    "Could not build wheels for {}, which is required to "
-                    "install pyproject.toml-based projects".format(
-                        ", ".join(pep517_build_failure_names)
-                    )
+                    f'Could not build wheels for {", ".join(pep517_build_failure_names)}, which is required to install pyproject.toml-based projects'
                 )
 
             # For now, we just warn about failures building legacy
@@ -530,8 +523,7 @@ class InstallCommand(RequirementCommand):
                     resolver_variant=self.determine_resolver_variant(options),
                 )
 
-            installed_desc = " ".join(items)
-            if installed_desc:
+            if installed_desc := " ".join(items):
                 write_output(
                     "Successfully installed %s",
                     installed_desc,
@@ -810,13 +802,10 @@ def create_os_error_message(
 
     It may occur anytime during the execution of the install command.
     """
-    parts = []
+    parts = ["Could not install packages due to an OSError"]
 
-    # Mention the error if we are not going to show a traceback
-    parts.append("Could not install packages due to an OSError")
     if not show_traceback:
-        parts.append(": ")
-        parts.append(str(error))
+        parts.extend((": ", str(error)))
     else:
         parts.append(".")
 
@@ -826,10 +815,10 @@ def create_os_error_message(
     # Suggest useful actions to the user:
     #  (1) using user site-packages or (2) verifying the permissions
     if error.errno == errno.EACCES:
-        user_option_part = "Consider using the `--user` option"
         permissions_part = "Check the permissions"
 
         if not running_under_virtualenv() and not using_user_site:
+            user_option_part = "Consider using the `--user` option"
             parts.extend(
                 [
                     user_option_part,
